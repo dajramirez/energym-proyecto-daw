@@ -9,7 +9,15 @@
 </head>
 
 <body>
-    <h1>Clases disponibles</h1>
+    <header>
+        <h1>Bienvenido, {{ auth()->user()->name }}</h1>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-button">Cerrar sesión</button>
+        </form>
+    </header>
+
+    <h2>Clases disponibles</h2>
 
     @if (session('success'))
         <div class="alert">
