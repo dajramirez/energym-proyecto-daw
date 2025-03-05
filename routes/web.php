@@ -18,8 +18,17 @@ Route::get('/welcome', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard.user');
     
+    Route::prefix('trainer')->group(function () {
+        Route::get('/classes', [TrainerController::class, 'index'])->name('trainer.classes');
+        Route::get('/classes/create', [TrainerController::class, 'create'])->name('trainer.classes.create');
+        Route::post('/classes', [TrainerController::class, 'store'])->name('trainer.classes.store');
+        Route::get('/classes/{class}/edit', [TrainerController::class, 'edit'])->name('trainer.classes.edit');
+        Route::put('/classes/{class}', [TrainerController::class, 'update'])->name('trainer.classes.update');
+        Route::delete('/classes/{class}/delete', [TrainerController::class, 'destroy'])->name('trainer.classes.delete');
+    });
+
     Route::post('/classes/{class}/enroll', [ClassController::class, 'enroll'])->name('classes.enroll');
     Route::delete('/classes/{class}/unenroll', [ClassController::class, 'unenroll'])->name('classes.unenroll');
 
