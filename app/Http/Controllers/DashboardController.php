@@ -22,6 +22,11 @@ class DashboardController extends Controller
                 return $class;
             });
         
-        return view('dashboard.user', compact('classes'));
+        return match ($user->role) {
+            'admin' => view('dashboard.admin'),
+            'clerk' => view('dashboard.clerk'),
+            'trainer' => view('dashboard.trainer'),
+            'user' => view('dashboard.user', compact($class)),
+        };
     }
 }
