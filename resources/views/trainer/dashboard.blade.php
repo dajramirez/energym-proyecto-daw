@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Panel del Entrenador</title>
+    <title>Dashboard del entrenador - EnerGym</title>
 </head>
+
 <body>
     <h1>Mis Clases</h1>
     <a href="{{ route('trainer.classes.create') }}">Crear Nueva Clase</a>
 
-    @if(session('success'))
+    @if (session('success'))
         <div class="alert">{{ session('success') }}</div>
     @endif
 
@@ -44,4 +46,5 @@
         </tbody>
     </table>
 </body>
+
 </html>
