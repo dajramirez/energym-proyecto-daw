@@ -9,21 +9,21 @@ use Illuminate\Support\Facades\Auth;
 
 class TrainerController extends Controller
 {
-    public function index() {
+    public function trainerDashboard() {
         
         $classes = GymClass::where('trainer_id', Auth::id())
             ->withCount('members')
             ->orderBy('start')
             ->get();
 
-        return view('dashboard.trainer', compact('classes'));
+        return view('trainer.dashboard', compact('classes'));
     }
 
-    public function create() {
+    public function createClass() {
         return view('trainer.classes.create');
     }
 
-    public function store(Request $request) {
+    public function storeClass(Request $request) {
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -38,10 +38,10 @@ class TrainerController extends Controller
             'trainer_id' => Auth::id()
         ]);
 
-        return redirect()->route('trainer.classes')->with('success', 'Clase creada con éxito.');
+        return redirect()->route('trainer.dashboard')->with('success', 'Clase creada con éxito.');
     }
 
-    public function edit(GymClass $class) {
+    public function editClass(GymClass $class) {
         
         if($class->trainer_id !== Auth::id()) {
             abort(403, 'Unauthorized', $headers);
@@ -50,7 +50,7 @@ class TrainerController extends Controller
         return view('trainer.classes.edit', compact('class'));
     }
 
-    public function update(GymClass $class) {
+    public function updateClass(Request $request, GymClass $class) {
 
         if($class->trainer_id !== Auth::id()){
             abort(403, 'Unauthorized', $headers);
@@ -65,16 +65,16 @@ class TrainerController extends Controller
         ]);
 
         $class->update($validated);
-        return view('trainer.classes')->with('success', 'Clase actualizada');
+        return redirect()->route('trainer.dashboard')->with('success', 'Clase actualizada');
     }
 
-    public function destroy(GymClass $class){
+    public function deleteClass(GymClass $class){
 
         if($class->trainer_id !== Auth::id()){
             abort(403, 'Unauthorized', $headers);
         }
 
         $class->delete();
-        return view('trainer.classes')->with('success', 'Clase cancelada');
+        return redirect()->route('trainer.dashboard')->with('success', 'Clase eliminada');
     }
 }

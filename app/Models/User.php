@@ -27,6 +27,14 @@ class User extends Authenticatable
         ];
     }
 
+    public static function allowedRolesForClerk() {
+        return [
+            self::ROLE_USER,
+            self::ROLE_TRAINER,
+            self::ROLE_CLERK,
+        ];
+    }
+
     /**
      * The attributes that are mass assignable.
      *
