@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\ClerkController;
 
 
 Route::get('/', function() {
@@ -31,40 +32,15 @@ Route::middleware('auth')->group(function() {
         Route::post('/classes', [TrainerController::class, 'storeClass'])->name('trainer.classes.store');
         Route::get('/classes/{class}/edit', [TrainerController::class, 'editClass'])->name('trainer.classes.edit');
         Route::put('/classes/{class}', [TrainerController::class, 'updateClass'])->name('trainer.classes.update');
-        Route::delete('/classes/{class}/delete', [TrainerController::class, 'destroyClass'])->name('trainer.classes.delete');
+        Route::delete('/classes/{class}/delete', [TrainerController::class, 'deleteClass'])->name('trainer.classes.delete');
+    });
+
+    Route::prefix('clerk')->group(function() {
+        Route::get('/dashboard', [ClerkController::class, 'clerkDashboard'])->name('clerk.dashboard');
+        Route::get('/users/create', [ClerkController::class, 'createUser'])->name('clerk.users.create');
+        Route::post('/users', [ClerkController::class, 'storeUser'])->name('clerk.users.store');
+        Route::get('/users/{user}/edit', [ClerkController::class, 'editUser'])->name('clerk.users.edit');
+        Route::put('/users/{user}', [ClerkController::class, 'updateUser'])->name('clerk.users.update');
+        Route::delete('/users/{user}/delete', [ClerkController::class, 'deleteUser'])->name('clerk.users.delete');
     });
 });
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/dashboard', function () {
-//         return view ('dashboard');
-//     });
-// });
-
-// Route::get('/welcome', function () {
-//     return view('welcome');
-// });
-
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard.user');
-    
-//     Route::prefix('trainer')->group(function () {
-//         Route::get('/classes', [TrainerController::class, 'index'])->name('trainer.classes');
-//         Route::get('/classes/create', [TrainerController::class, 'create'])->name('trainer.classes.create');
-//         Route::post('/classes', [TrainerController::class, 'store'])->name('trainer.classes.store');
-//         Route::get('/classes/{class}/edit', [TrainerController::class, 'edit'])->name('trainer.classes.edit');
-//         Route::put('/classes/{class}', [TrainerController::class, 'update'])->name('trainer.classes.update');
-//         Route::delete('/classes/{class}/delete', [TrainerController::class, 'destroy'])->name('trainer.classes.delete');
-//     });
-
-//     Route::post('/classes/{class}/enroll', [ClassController::class, 'enroll'])->name('classes.enroll');
-//     Route::delete('/classes/{class}/unenroll', [ClassController::class, 'unenroll'])->name('classes.unenroll');
-
-//     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-// });
-
-// Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-// Route::post('/register', [RegisterController::class, 'register']);
-
-// Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-// Route::post('/login', [LoginController::class, 'login']);

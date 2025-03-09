@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use App\Models\User;
 
 class ClerkController extends Controller
 {
     public function clerkDashboard() {
-        return view('clerk.dashboard');
+        $perPage = request('per_page', 10);
+        $users = User::where('role', '!=', User::ROLE_ADMIN)
+            ->paginate($perPage);
+
+        return view('clerk.dashboard', compact('users'));
     }
 
     public function createUser() {
@@ -69,5 +76,15 @@ class ClerkController extends Controller
         $user->update($updateData);
 
         return redirect()->route('clerk.dashboard')->with('success', 'Usuario actualizado con éxito.');
+    }
+
+    public function deleteUser(User $user) {
+        if($user->role === User::ROLE_ADMIN) {
+            abort(403, 'Unauthorized');
+        }
+
+        $user->delete();
+
+        return redirect()->route('clerk.dashboard')->with('success', 'Usuario eliminado con éxito.');
     }
 }

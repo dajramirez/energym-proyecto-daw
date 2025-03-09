@@ -68,7 +68,7 @@ class TrainerController extends Controller
         return redirect()->route('trainer.dashboard')->with('success', 'Clase actualizada');
     }
 
-    public function destroyClass(GymClass $class){
+    public function deleteClass(GymClass $class){
 
         if($class->trainer_id !== Auth::id()){
             abort(403, 'Unauthorized', $headers);
