@@ -32,18 +32,25 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            return match ($user->role) {
-                'admin' => redirect()->intended('/admin/dashboard'),
-                'trainer' => redirect()->intended('/trainer/dashboard'),
-                'clerk' => redirect()->intended('/clerk/dashboard'),
-                'user' => redirect()->intended('/user/dashboard'),
-                default => redirect()->intended('/'),
-            };
+            return response()->json([
+                'redirect' => $this.getDashboardRoute($user->role),
+                'user' => $user,
+            ]);
         }
 
-        return back()->withErrors([
-            'login' => 'Las credenciales no son válidas.'
-        ]);
+        return response()->json([
+            'error' => 'Invalid credentials',
+        ], 401);
+    }
+
+    private function getDashboardRoute($role)
+    {
+        return match($role) {
+            'admin' => '/admin/dashboard',
+            'trainer' => '/trainer/dashboard',
+            'clerk' => '/clerk/dashboard',
+            'user' => '/user/dashboard',
+        };
     }
 
     public function logout(Request $request)
